@@ -109,9 +109,9 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     h5bp: function () {
-      this.copy('favicon.ico', 'app/favicon.ico');
-      this.copy('apple-touch-icon.png', 'app/apple-touch-icon.png');
-      this.copy('robots.txt', 'app/robots.txt');
+      this.copy('favicon.ico', 'public/favicon.ico');
+      this.copy('apple-touch-icon.png', 'public/apple-touch-icon.png');
+      this.copy('robots.txt', 'public/robots.txt');
     },
 
     mainStylesheet: function () {
@@ -148,6 +148,10 @@ module.exports = yeoman.generators.Base.extend({
       this.mkdir('app/assets/fonts');
       this.copy('app.js', 'app/assets/js/app.js');
     }
+  },
+
+  public: function () {
+    this.mkdir('public');
   },
 
   install: function () {
