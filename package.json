@@ -1,10 +1,10 @@
 {
-  "name": "generator-gulp-webapp",
-  "version": "0.3.0",
+  "name": "generator-union-webapp",
+  "version": "0.0.1",
   "description": "Scaffold out a front-end web app",
   "license": "BSD",
-  "repository": "yeoman/generator-gulp-webapp",
-  "author": "The Yeoman Team",
+  "repository": "unionco/generator-union-webapp",
+  "author": "The UNION Team",
   "main": "app/index.js",
   "engines": {
     "node": ">=0.10.0",
@@ -22,7 +22,6 @@
     "app",
     "front-end",
     "h5bp",
-    "modernizr",
     "jquery",
     "gulp"
   ],
