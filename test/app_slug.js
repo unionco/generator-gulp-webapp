@@ -32,9 +32,6 @@ describe('Gulp Webapp generator slug name', function () {
       'bower.json',
       'app/index.html'
     ];
-    helpers.mockPrompt(this.webapp, {
-      features: ['includeSass']
-    });
 
     this.webapp.run(function () {
       // Check if all files are created for the test
