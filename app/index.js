@@ -117,7 +117,7 @@ module.exports = yeoman.generators.Base.extend({
     mainStylesheet: function () {
       var css = 'screen.scss';
 
-      this.copy(css, 'app/sass/' + css);
+      this.copy(css, 'app/assets/sass/' + css);
     },
 
     writeIndex: function () {
@@ -127,8 +127,8 @@ module.exports = yeoman.generators.Base.extend({
       this.indexFile = this.appendFiles({
         html: this.indexFile,
         fileType: 'js',
-        optimizedPath: 'js/app.js',
-        sourceFileList: ['js/app.js']
+        optimizedPath: 'assets/js/app.js',
+        sourceFileList: ['assets/js/app.js']
       });
 
       this.write('app/index.html', this.indexFile);
@@ -136,16 +136,17 @@ module.exports = yeoman.generators.Base.extend({
 
     app: function () {
       this.mkdir('app');
-      this.mkdir('app/js');
-      this.mkdir('app/js/vendor');
-      this.mkdir('app/sass');
-      this.mkdir('app/sass/common');
-      this.mkdir('app/sass/modules');
-      this.mkdir('app/sass/screens');
-      this.mkdir('app/sass/vendor');
-      this.mkdir('app/img');
-      this.mkdir('app/fonts');
-      this.copy('app.js', 'app/js/app.js');
+      this.mkdir('app/assets');
+      this.mkdir('app/assets/js');
+      this.mkdir('app/assets/js/vendor');
+      this.mkdir('app/assets/sass');
+      this.mkdir('app/assets/sass/common');
+      this.mkdir('app/assets/sass/modules');
+      this.mkdir('app/assets/sass/screens');
+      this.mkdir('app/assets/sass/vendor');
+      this.mkdir('app/assets/img');
+      this.mkdir('app/assets/fonts');
+      this.copy('app.js', 'app/assets/js/app.js');
     }
   },
 
@@ -184,7 +185,7 @@ module.exports = yeoman.generators.Base.extend({
         bowerJson: bowerJson,
         directory: 'bower_components',
         ignorePath: /^(\.\.\/)+/,
-        src: 'app/sass/*.scss'
+        src: 'app/assets/sass/*.scss'
       });
 
       // ideally we should use composeWith, but we're invoking it here
