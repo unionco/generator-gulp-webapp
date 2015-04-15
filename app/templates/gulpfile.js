@@ -7,7 +7,7 @@ var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
 gulp.task('styles', function () {
-  return gulp.src('app/assets/sass/screen.scss')
+  return gulp.src('public/src/scss/screen.scss')
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       outputStyle: 'nested', // libsass doesn't support expanded yet
@@ -19,12 +19,12 @@ gulp.task('styles', function () {
       require('autoprefixer-core')({browsers: ['last 1 version']})
     ]))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest('.tmp/scss'))
     .pipe(reload({stream: true}));
 });
 
 gulp.task('jshint', function () {
-  return gulp.src('app/assets/js/**/*.js')
+  return gulp.src('public/src/js/**/*.js')
     .pipe(reload({stream: true, once: true}))
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
@@ -34,7 +34,7 @@ gulp.task('jshint', function () {
 gulp.task('html', ['styles'], function () {
   var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
 
-  return gulp.src('app/assets/*.html')
+  return gulp.src('app/*.html')
     .pipe(assets)
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.csso()))
@@ -45,7 +45,7 @@ gulp.task('html', ['styles'], function () {
 });
 
 gulp.task('images', function () {
-  return gulp.src('app/assets/images/**/*')
+  return gulp.src('public/src/img/**/*')
     .pipe($.imagemin({
       progressive: true,
       interlaced: true,
@@ -53,24 +53,23 @@ gulp.task('images', function () {
       // as hooks for embedding and styling
       svgoPlugins: [{cleanupIDs: false}]
     }))
-    .pipe(gulp.dest('public/img'));
+    .pipe(gulp.dest('public/dist/img'));
 });
 
 gulp.task('fonts', function () {
   return gulp.src(require('main-bower-files')({
     filter: '**/*.{eot,svg,ttf,woff,woff2}'
-  }).concat('app/assets/fonts/**/*'))
+  }).concat('public/src/fonts/**/*'))
     .pipe(gulp.dest('.tmp/fonts'))
-    .pipe(gulp.dest('public/fonts'));
+    .pipe(gulp.dest('public/dist/fonts'));
 });
 
 gulp.task('extras', function () {
   return gulp.src([
-    'app/assets/*.*',
-    '!app/assets/*.html'
+    'public/src/*.*'
   ], {
     dot: true
-  }).pipe(gulp.dest('public'));
+  }).pipe(gulp.dest('public/dist'));
 });
 
 gulp.task('clean', require('del').bind(null, ['.tmp', 'public']));
@@ -80,7 +79,7 @@ gulp.task('serve', ['styles', 'fonts'], function () {
     notify: false,
     port: 9000,
     server: {
-      baseDir: ['.tmp', 'app'],
+      baseDir: ['.tmp', 'public'],
       routes: {
         '/bower_components': 'bower_components'
       }
@@ -89,14 +88,14 @@ gulp.task('serve', ['styles', 'fonts'], function () {
 
   // watch for changes
   gulp.watch([
-    'app/assets/*.html',
-    'app/assets/js/**/*.js',
-    'app/assets/img/**/*',
+    'app/*.html',
+    'public/src/js/**/*.js',
+    'public/src/img/**/*',
     '.tmp/fonts/**/*'
   ]).on('change', reload);
 
-  gulp.watch('app/assets/sass/**/*.scss', ['styles']);
-  gulp.watch('app/assets/fonts/**/*', ['fonts']);
+  gulp.watch('public/src/scss/**/*.scss', ['styles']);
+  gulp.watch('public/src/fonts/**/*', ['fonts']);
   gulp.watch('bower.json', ['wiredep', 'fonts']);
 });
 
@@ -113,12 +112,12 @@ gulp.task('serve:public', function () {
 // inject bower components
 gulp.task('wiredep', function () {
   var wiredep = require('wiredep').stream;
-  gulp.src('app/assets/sass/*.scss')
+  gulp.src('public/src/scss/*.scss')
     .pipe(wiredep({
       ignorePath: /^(\.\.\/)+/
     }))
-    .pipe(gulp.dest('app/assets/sass'));
-  gulp.src('app/assets/*.html')
+    .pipe(gulp.dest('public/src/scss'));
+  gulp.src('app/*.html')
     .pipe(wiredep({
       ignorePath: /^(\.\.\/)*\.\./
     }))

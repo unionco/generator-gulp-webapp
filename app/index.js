@@ -117,7 +117,7 @@ module.exports = yeoman.generators.Base.extend({
     mainStylesheet: function () {
       var css = 'screen.scss';
 
-      this.copy(css, 'app/assets/sass/' + css);
+      this.copy(css, 'public/src/scss/' + css);
     },
 
     writeIndex: function () {
@@ -127,31 +127,28 @@ module.exports = yeoman.generators.Base.extend({
       this.indexFile = this.appendFiles({
         html: this.indexFile,
         fileType: 'js',
-        optimizedPath: 'assets/js/app.js',
-        sourceFileList: ['assets/js/app.js']
+        optimizedPath: 'dist/js/app.js',
+        sourceFileList: ['src/js/app.js']
       });
 
       this.write('app/index.html', this.indexFile);
     },
 
-    app: function () {
-      this.mkdir('app');
-      this.mkdir('app/assets');
-      this.mkdir('app/assets/js');
-      this.mkdir('app/assets/js/vendor');
-      this.mkdir('app/assets/sass');
-      this.mkdir('app/assets/sass/common');
-      this.mkdir('app/assets/sass/modules');
-      this.mkdir('app/assets/sass/screens');
-      this.mkdir('app/assets/sass/vendor');
-      this.mkdir('app/assets/img');
-      this.mkdir('app/assets/fonts');
-      this.copy('app.js', 'app/assets/js/app.js');
+    public: function () {
+      this.mkdir('public');
+      this.mkdir('public/src');
+      this.mkdir('public/src/js');
+      this.mkdir('public/src/js/vendor');
+      this.mkdir('public/src/scss');
+      this.mkdir('public/src/scss/common');
+      this.mkdir('public/src/scss/modules');
+      this.mkdir('public/src/scss/screens');
+      this.mkdir('public/src/scss/vendor');
+      this.mkdir('public/src/img');
+      this.mkdir('public/src/fonts');
+      this.mkdir('public/dist');
+      this.copy('app.js', 'public/src/js/app.js');
     }
-  },
-
-  public: function () {
-    this.mkdir('public');
   },
 
   install: function () {
@@ -189,7 +186,7 @@ module.exports = yeoman.generators.Base.extend({
         bowerJson: bowerJson,
         directory: 'bower_components',
         ignorePath: /^(\.\.\/)+/,
-        src: 'app/assets/sass/*.scss'
+        src: 'public/src/scss/*.scss'
       });
 
       // ideally we should use composeWith, but we're invoking it here
