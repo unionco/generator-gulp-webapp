@@ -111,9 +111,10 @@ gulp.task('js:clean', function() {
  ** JS: Combine vendor js files
  */
 gulp.task('js:vendor', function() {
-  return gulp.src([
-    config.bower_path + 'modernizr/modernizr.js',
-    config.bower_path + 'jquery/dist/jquery.js'
+  return gulp.src([<%
+    _.forEach(vendorScripts, function(filePath, n) { %>
+      config.bower_path + '<%= filePath %>'<% if (n < (vendorScripts.length - 1)) { %>,<% } %><%
+    }); %>
   ])
   .pipe(concat('vendor.js'))
   .pipe(gulp.dest(config.js_dist));

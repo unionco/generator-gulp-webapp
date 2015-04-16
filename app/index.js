@@ -39,25 +39,30 @@ module.exports = yeoman.generators.Base.extend({
     this.srcAssetsPath = this.rootFolder + 'src/';
     this.distAssetsPathPublic = 'dist/';
     this.distAssetsPath = this.rootFolder + 'dist/';
+    this.vendorScripts = [
+      'jquery/dist/jquery.js',
+      'modernizr/modernizr.js',
+      'fastclick/lib/fastclick.js'
+    ];
   },
 
   prompting: function () {
     var done = this.async();
 
     if (!this.options['skip-welcome-message']) {
-      this.log(yosay("It's business time. UNION-style."));
+      this.log(yosay("It's business time, UNION-style."));
     }
 
     var prompts = [
     {
       type: 'input',
       name: 'siteurl',
-      message: "Enter the website URL (i.e. 'union.co')"
+      message: "Enter the website URL (i.e. 'union.co'):\n"
     },
     {
       type: 'input',
       name: 'templatepath',
-      message: "Where will views be stored? Root-relative filepath (i.e. 'craft/templates')"
+      message: "Where will views be stored? Root-relative filepath (i.e. 'craft/templates'):\n"
     }
     ];
 
@@ -129,6 +134,7 @@ module.exports = yeoman.generators.Base.extend({
 
     views: function() {
       this.mkdir(this.templatePath);
+      this.copy('index.html', this.templatePath + '/index.html');
     },
 
     public: function () {
