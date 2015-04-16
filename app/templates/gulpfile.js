@@ -1,133 +1,167 @@
-/*global -$ */
-'use strict';
-// generated on <%= (new Date).toISOString().split('T')[0] %> using <%= pkg.name %> <%= pkg.version %>
-var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
-var browserSync = require('browser-sync');
-var reload = browserSync.reload;
+var fs = require('fs'),
+  argv = require('yargs').argv,
+  browserify = require('browserify'),
+  transform = require('vinyl-transform'),
+  browserSync = require('browser-sync'),
+  gulp = require('gulp'),
+  sass = require('gulp-sass'),
+  prefixer = require('gulp-autoprefixer'),
+  sourcemaps = require('gulp-sourcemaps'),
+  concat = require('gulp-concat'),
+  uglify = require('gulp-uglify'),
+  minify = require('gulp-minify-css'),
+  imagemin = require('gulp-imagemin'),
+  clean = require('gulp-clean'),
+  rename = require('gulp-rename'),
+  config = {
+    browserSync_proxy: 'dev.<% siteUrl %>',
+    bower_path: 'bower_components/',
+    template_src: ['craft/templates/*.html', 'craft/templates/*.twig', 'craft/templates/**/*.html', 'craft/templates/**/*.twig'],
+    js_src: ['public/src/js/*.js', 'public/src/js/**/*.js'],
+    sass_src: ['public/src/scss/*.scss', 'public/src/scss/**/*.scss'],
+    img_src: ['public/src/img/**/*', 'public/src/img/*'],
+    js_dist: 'public/dist/js/',
+    css_dist: 'public/dist/css/',
+    img_dist: 'public/dist/img/'
+  };
+/*
+ ** Update bower component path if .bowerrc file exists
+ */
+if (fs.existsSync('.bowerrc')) {
+  var bower_config = JSON.parse(fs.readFileSync('.bowerrc')),
+    bower_dir = bower_config.directory;
+  config.bower_path = (bower_dir.substr(bower_dir.length, -1) !== "/") ? bower_dir + "/" : bower_dir;
+}
 
-gulp.task('styles', function () {
-  return gulp.src('public/src/scss/screen.scss')
-    .pipe($.sourcemaps.init())
-    .pipe($.sass({
-      outputStyle: 'nested', // libsass doesn't support expanded yet
-      precision: 10,
-      includePaths: ['.'],
-      onError: console.error.bind(console, 'Sass error:')
-    }))
-    .pipe($.postcss([
-      require('autoprefixer-core')({browsers: ['last 1 version']})
-    ]))
-    .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/scss'))
-    .pipe(reload({stream: true}));
+/*
+ ** Initial file observers
+ */
+gulp.watch(config.js_src, ['js:dist']);
+gulp.watch(config.sass_src, ['css:dist']);
+gulp.watch(config.img_src, ['img:dist']);
+gulp.watch(config.template_src, ['util:reload']);
+/*
+ ** UTIL: Start browser sync
+ */
+gulp.task('util:sync', function() {
+  if(argv.sync !== 0) {
+    browserSync({
+      proxy: config.browserSync_proxy
+    });
+  }
 });
-
-gulp.task('jshint', function () {
-  return gulp.src('public/src/js/**/*.js')
-    .pipe(reload({stream: true, once: true}))
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'))
-    .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
+/*
+ ** UTIL: Reload browser sync
+ */
+gulp.task('util:reload', function() {
+  browserSync.reload();
 });
-
-gulp.task('html', ['styles'], function () {
-  var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
-
-  return gulp.src('app/*.html')
-    .pipe(assets)
-    .pipe($.if('*.js', $.uglify()))
-    .pipe($.if('*.css', $.csso()))
-    .pipe(assets.restore())
-    .pipe($.useref())
-    .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
-    .pipe(gulp.dest('public'));
+/*
+ ** CSS: Clean destination folder before processing css
+ */
+gulp.task('css:clean', function() {
+  return gulp.src([config.css_dist + '*.css'], {
+    read: false
+  })
+  .pipe(clean());
 });
-
-gulp.task('images', function () {
-  return gulp.src('public/src/img/**/*')
-    .pipe($.imagemin({
-      progressive: true,
-      interlaced: true,
-      // don't remove IDs from SVGs, they are often used
-      // as hooks for embedding and styling
-      svgoPlugins: [{cleanupIDs: false}]
-    }))
-    .pipe(gulp.dest('public/dist/img'));
+/*
+ ** CSS: Compile sass and add autoprefixer
+ */
+gulp.task('css:sass', function() {
+  return gulp.src(config.sass_src)
+  .pipe(sourcemaps.init())
+  .pipe(sass({
+    includePaths: [config.bower_path + 'normalize-scss/'],
+    outputStyle: "expanded",
+    errLogToConsole: false
+  }))
+  .pipe(prefixer({
+    browsers: ['last 3 versions', 'ie > 8', 'ff > 14']
+  }))
+  .pipe(sourcemaps.write('./'))
+  .pipe(gulp.dest(config.css_dist));
 });
-
-gulp.task('fonts', function () {
-  return gulp.src(require('main-bower-files')({
-    filter: '**/*.{eot,svg,ttf,woff,woff2}'
-  }).concat('public/src/fonts/**/*'))
-    .pipe(gulp.dest('.tmp/fonts'))
-    .pipe(gulp.dest('public/dist/fonts'));
+/*
+ ** CSS: Minify compiled css files
+ */
+gulp.task('css:dist', ['css:clean', 'css:sass'], function() {
+  return gulp.src([config.css_dist + '*.css'])
+  .pipe(minify({
+    keepSpecialComments: 0
+  }))
+  .pipe(rename({
+    suffix: '.min'
+  }))
+  .pipe(gulp.dest(config.css_dist))
+  .pipe(browserSync.reload({
+    stream: true
+  }));
 });
-
-gulp.task('extras', function () {
+/*
+ ** JS: Clean js folder before processing scripts
+ */
+gulp.task('js:clean', function() {
+  return gulp.src([config.js_dist + '*.js'], {
+    read: false
+  })
+  .pipe(clean());
+});
+/*
+ ** JS: Combine vendor js files
+ */
+gulp.task('js:vendor', function() {
   return gulp.src([
-    'public/src/*.*'
-  ], {
-    dot: true
-  }).pipe(gulp.dest('public/dist'));
+    config.bower_path + 'modernizr/modernizr.js',
+    config.bower_path + 'jquery/dist/jquery.js'
+  ])
+  .pipe(concat('vendor.js'))
+  .pipe(gulp.dest(config.js_dist));
 });
-
-gulp.task('clean', require('del').bind(null, ['.tmp', 'public']));
-
-gulp.task('serve', ['styles', 'fonts'], function () {
-  browserSync({
-    notify: false,
-    port: 9000,
-    server: {
-      baseDir: ['.tmp', 'public'],
-      routes: {
-        '/bower_components': 'bower_components'
-      }
-    }
+/*
+ ** JS: Build main app files via browserify
+ */
+gulp.task('js:browserify', function() {
+  var browserifyTrans = transform(function(file) {
+    var browserified = browserify(file);
+    return browserified.bundle();
   });
 
-  // watch for changes
-  gulp.watch([
-    'app/*.html',
-    'public/src/js/**/*.js',
-    'public/src/img/**/*',
-    '.tmp/fonts/**/*'
-  ]).on('change', reload);
-
-  gulp.watch('public/src/scss/**/*.scss', ['styles']);
-  gulp.watch('public/src/fonts/**/*', ['fonts']);
-  gulp.watch('bower.json', ['wiredep', 'fonts']);
+  return gulp.src([config.js_src[0]])
+    .pipe(browserifyTrans)
+    .pipe(gulp.dest(config.js_dist));
 });
-
-gulp.task('serve:public', function () {
-  browserSync({
-    notify: false,
-    port: 9000,
-    server: {
-      baseDir: ['public']
-    }
-  });
+/*
+ ** JS: Minify compiled js files
+ */
+gulp.task('js:dist', ['js:clean', 'js:vendor', 'js:browserify'], function() {
+  return gulp.src([config.js_dist + '*.js']).pipe(uglify()).pipe(rename({
+    suffix: '.min'
+  }))
+  .pipe(gulp.dest(config.js_dist))
+  .pipe(browserSync.reload({
+    stream: true
+  }));
 });
-
-// inject bower components
-gulp.task('wiredep', function () {
-  var wiredep = require('wiredep').stream;
-  gulp.src('public/src/scss/*.scss')
-    .pipe(wiredep({
-      ignorePath: /^(\.\.\/)+/
-    }))
-    .pipe(gulp.dest('public/src/scss'));
-  gulp.src('app/*.html')
-    .pipe(wiredep({
-      ignorePath: /^(\.\.\/)*\.\./
-    }))
-    .pipe(gulp.dest('app'));
+/*
+ ** IMG: Run imagemin on all images
+ */
+gulp.task('img:dist', function() {
+  gulp.src(config.img_src).pipe(imagemin({
+    optimizationLevel: 0,
+    progressive: true,
+    svgoPlugins: [{
+      removeViewBox: false
+    }, {
+      removeEmptyAttrs: true
+    }]
+  }))
+  .pipe(gulp.dest(config.img_dist))
+  .pipe(browserSync.reload({
+    stream: true
+  }));
 });
-
-gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], function () {
-  return gulp.src('public/**/*').pipe($.size({title: 'build', gzip: true}));
-});
-
-gulp.task('default', ['clean'], function () {
-  gulp.start('build');
-});
+/*
+ ** Default Task
+ */
+gulp.task('default', ['css:dist', 'js:dist', 'img:dist', 'util:sync']);

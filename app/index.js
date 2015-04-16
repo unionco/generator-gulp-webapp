@@ -40,7 +40,7 @@ module.exports = yeoman.generators.Base.extend({
     var done = this.async();
 
     if (!this.options['skip-welcome-message']) {
-      this.log(yosay('\'Allo \'allo! Out of the box I include HTML5 Boilerplate, jQuery, and a gulpfile.js to build your app.'));
+      this.log(yosay('It\'s business time. UNION-style.'));
     }
 
     var prompts = [{
@@ -52,6 +52,19 @@ module.exports = yeoman.generators.Base.extend({
         value: 'includeModernizr',
         checked: true
       }]
+    },{
+      type: 'input',
+      name: 'siteurl',
+      message: 'Enter the website URL for this project (omit protocols and \'dev.\', please)',
+      validate: function(input) {
+        setTimeout(function() {
+          if (typeof input !== "string" || input.length === 0) {
+            done("Please enter the website URL, omitting protocols and 'dev.' (i.e. 'union.co').");
+            return;
+          }
+          done(true);
+        }, 3000);
+      }
     }];
 
     this.prompt(prompts, function (answers) {
@@ -64,6 +77,7 @@ module.exports = yeoman.generators.Base.extend({
       // manually deal with the response, get back and store the results.
       // we change a bit this way of doing to automatically do this in the self.prompt() method.
       this.includeModernizr = hasFeature('includeModernizr');
+      this.siteUrl = answers.siteurl;
 
       done();
     }.bind(this));
