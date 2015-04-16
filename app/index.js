@@ -34,8 +34,11 @@ module.exports = yeoman.generators.Base.extend({
 
   initializing: function () {
     this.pkg = require('../package.json');
-    this.srcAssetsPath = 'public/src/';
-    this.distAssetsPath = 'public/dist/';
+    this.rootFolder = 'public/';
+    this.srcAssetsPathPublic = 'src/';
+    this.srcAssetsPath = this.rootFolder + 'src/';
+    this.distAssetsPathPublic = 'dist/';
+    this.distAssetsPath = this.rootFolder + 'dist/';
   },
 
   prompting: function () {
@@ -107,9 +110,9 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     h5bp: function () {
-      this.copy('favicon.ico', 'public/favicon.ico');
-      this.copy('apple-touch-icon.png', 'public/apple-touch-icon.png');
-      this.copy('robots.txt', 'public/robots.txt');
+      this.copy('favicon.ico', this.rootFolder + 'favicon.ico');
+      this.copy('apple-touch-icon.png', this.rootFolder + 'apple-touch-icon.png');
+      this.copy('robots.txt', this.rootFolder + 'robots.txt');
     },
 
     sass: function () {
@@ -124,18 +127,8 @@ module.exports = yeoman.generators.Base.extend({
       this.copy('home.scss', this.srcAssetsPath + 'scss/screens/_home.scss');
     },
 
-    writeIndex: function () {
-      this.indexFile = this.src.read('index.html');
-      this.indexFile = this.engine(this.indexFile, this);
-
-      this.indexFile = this.appendFiles({
-        html: this.indexFile,
-        fileType: 'js',
-        optimizedPath: 'dist/js/app.js',
-        sourceFileList: ['src/js/app.js']
-      });
-
-      this.write('app/index.html', this.indexFile);
+    views: function() {
+      this.mkdir(this.templatePath);
     },
 
     public: function () {
