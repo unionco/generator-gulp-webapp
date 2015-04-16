@@ -56,15 +56,7 @@ module.exports = yeoman.generators.Base.extend({
       type: 'input',
       name: 'siteurl',
       message: 'Enter the website URL for this project (omit protocols and \'dev.\', please)',
-      validate: function(input) {
-        setTimeout(function() {
-          if (typeof input !== "string" || input.length === 0) {
-            done("Please enter the website URL, omitting protocols and 'dev.' (i.e. 'union.co').");
-            return;
-          }
-          done(true);
-        }, 3000);
-      }
+      validate: true
     }];
 
     this.prompt(prompts, function (answers) {
