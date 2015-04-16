@@ -12,19 +12,12 @@ Please see our [gulpfile.js](app/templates/gulpfile.js) for up to date informati
 * CSS Autoprefixing
 * Built-in preview server with BrowserSync
 * Sass compilation with [libsass](http://libsass.org)
-* Automagically lint your scripts
+* Automatically lint your scripts
 * Map compiled CSS to source stylesheets with source maps
 * Image optimization
-* Automagically wire-up dependencies installed with [Bower](http://bower.io)
+* Automatically wire-up dependencies installed with [Bower](http://bower.io)
 
 *For more information on what this generator can do for you, take a look at the [gulp plugins](app/templates/_package.json) used in our `package.json`.*
-
-
-## libsass
-
-Keep in mind that libsass is feature-wise not fully compatible with Ruby Sass. Check out [this](http://sass-compatibility.github.io) curated list of incompatibilities to find out which features are missing.
-
-If your favorite feature is missing and you really need Ruby Sass, you can always switch to [gulp-ruby-sass](https://github.com/sindresorhus/gulp-ruby-sass) and update the `styles` task in `gulpfile.js` accordingly.
 
 
 ## Getting Started
@@ -32,7 +25,7 @@ If your favorite feature is missing and you really need Ruby Sass, you can alway
 - Install dependencies: `npm install --global yo bower`
 - Install the generator: `npm install --global generator-union-webapp`
 - Run `yo gulp-webapp` to scaffold your webapp
-- Run `gulp serve` to preview and watch for changes
+- Run `gulp` to preview and watch for changes
 - Run `bower install --save <package>` to install frontend dependencies
 - Run `gulp` to build your webapp for production
 
