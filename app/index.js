@@ -55,8 +55,7 @@ module.exports = yeoman.generators.Base.extend({
     },{
       type: 'input',
       name: 'siteurl',
-      message: 'Enter the website URL for this project (omit protocols and \'dev.\', please)',
-      validate: true
+      message: 'Enter the website URL for this project (omit protocols and \'dev.\', please)'
     }];
 
     this.prompt(prompts, function (answers) {
