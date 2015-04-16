@@ -34,43 +34,34 @@ module.exports = yeoman.generators.Base.extend({
 
   initializing: function () {
     this.pkg = require('../package.json');
+    this.srcAssetsPath = 'public/src/';
+    this.distAssetsPath = 'public/dist/';
   },
 
   prompting: function () {
     var done = this.async();
 
     if (!this.options['skip-welcome-message']) {
-      this.log(yosay('It\'s business time. UNION-style.'));
+      this.log(yosay("It's business time. UNION-style."));
     }
 
     var prompts = [
-    // {
-    //   type: 'checkbox',
-    //   name: 'features',
-    //   message: 'What more would you like?',
-    //   choices: [{
-    //     name: 'Modernizr',
-    //     value: 'includeModernizr',
-    //     checked: true
-    //   }]
-    // },
     {
       type: 'input',
       name: 'siteurl',
-      message: 'Enter the website URL for this project (omit protocols and \'dev.\', please)'
-    }];
+      message: "Enter the website URL (i.e. 'union.co')"
+    },
+    {
+      type: 'input',
+      name: 'templatepath',
+      message: "Where will views be stored? Root-relative filepath (i.e. 'craft/templates')"
+    }
+    ];
 
     this.prompt(prompts, function (answers) {
-      // var features = answers.features;
 
-      // var hasFeature = function (feat) {
-      //   return features.indexOf(feat) !== -1;
-      // };
-
-      // manually deal with the response, get back and store the results.
-      // we change a bit this way of doing to automatically do this in the self.prompt() method.
-      // this.includeModernizr = hasFeature('includeModernizr');
       this.siteUrl = answers.siteurl;
+      this.templatePath = answers.templatepath;
 
       done();
     }.bind(this));
@@ -94,12 +85,14 @@ module.exports = yeoman.generators.Base.extend({
       var bower = {
         name: this._.slugify(this.appname),
         private: true,
-        dependencies: {}
+        dependencies: {
+          'jquery': '~2.1.1',
+          'modernizr': '~2.8.1',
+          'normalize-scss': '~3.0.2',
+          'fastclick': '~1.0.3',
+          'animate.css': '~3.2.1'
+        }
       };
-
-      bower.dependencies.jquery = '~2.1.1';
-
-      bower.dependencies.modernizr = '~2.8.1';
 
       this.copy('bowerrc', '.bowerrc');
       this.write('bower.json', JSON.stringify(bower, null, 2));
@@ -119,10 +112,16 @@ module.exports = yeoman.generators.Base.extend({
       this.copy('robots.txt', 'public/robots.txt');
     },
 
-    mainStylesheet: function () {
-      var css = 'screen.scss';
-
-      this.copy(css, 'public/src/scss/' + css);
+    sass: function () {
+      this.copy('screen.scss', this.srcAssetsPath + 'scss/screen.scss');
+      this.copy('global.scss', this.srcAssetsPath + 'scss/_global.scss');
+      this.copy('base.scss', this.srcAssetsPath + 'scss/common/_base.scss');
+      this.copy('layout.scss', this.srcAssetsPath + 'scss/common/_layout.scss');
+      this.copy('mixins.scss', this.srcAssetsPath + 'scss/common/_mixins.scss');
+      this.copy('utilities.scss', this.srcAssetsPath + 'scss/common/_utilities.scss');
+      this.copy('variables.scss', this.srcAssetsPath + 'scss/common/_variables.scss');
+      this.copy('module.scss', this.srcAssetsPath + 'scss/modules/_module.scss');
+      this.copy('home.scss', this.srcAssetsPath + 'scss/screens/_home.scss');
     },
 
     writeIndex: function () {
@@ -141,18 +140,18 @@ module.exports = yeoman.generators.Base.extend({
 
     public: function () {
       this.mkdir('public');
-      this.mkdir('public/src');
-      this.mkdir('public/src/js');
-      this.mkdir('public/src/js/vendor');
-      this.mkdir('public/src/scss');
-      this.mkdir('public/src/scss/common');
-      this.mkdir('public/src/scss/modules');
-      this.mkdir('public/src/scss/screens');
-      this.mkdir('public/src/scss/vendor');
-      this.mkdir('public/src/img');
-      this.mkdir('public/src/fonts');
-      this.mkdir('public/dist');
-      this.copy('app.js', 'public/src/js/app.js');
+      this.mkdir(this.srcAssetsPath);
+      this.mkdir(this.srcAssetsPath + 'js');
+      this.mkdir(this.srcAssetsPath + 'js/vendor');
+      this.mkdir(this.srcAssetsPath + 'scss');
+      this.mkdir(this.srcAssetsPath + 'scss/common');
+      this.mkdir(this.srcAssetsPath + 'scss/modules');
+      this.mkdir(this.srcAssetsPath + 'scss/screens');
+      this.mkdir(this.srcAssetsPath + 'scss/vendor');
+      this.mkdir(this.srcAssetsPath + 'img');
+      this.mkdir(this.srcAssetsPath + 'fonts');
+      this.mkdir(this.distAssetsPath);
+      this.copy('app.js', this.srcAssetsPath + 'js/app.js');
     }
   },
 
@@ -191,7 +190,7 @@ module.exports = yeoman.generators.Base.extend({
         bowerJson: bowerJson,
         directory: 'bower_components',
         ignorePath: /^(\.\.\/)+/,
-        src: 'public/src/scss/*.scss'
+        src: this.srcAssetsPath + 'scss/*.scss'
       });
 
       // ideally we should use composeWith, but we're invoking it here

@@ -16,13 +16,13 @@ var fs = require('fs'),
   config = {
     browserSync_proxy: 'dev.<%= siteUrl %>',
     bower_path: 'bower_components/',
-    template_src: ['craft/templates/*.html', 'craft/templates/*.twig', 'craft/templates/**/*.html', 'craft/templates/**/*.twig'],
-    js_src: ['public/src/js/*.js', 'public/src/js/**/*.js'],
-    sass_src: ['public/src/scss/*.scss', 'public/src/scss/**/*.scss'],
-    img_src: ['public/src/img/**/*', 'public/src/img/*'],
-    js_dist: 'public/dist/js/',
-    css_dist: 'public/dist/css/',
-    img_dist: 'public/dist/img/'
+    template_src: ['<%= templatePath %>/*.html', '<%= templatePath %>/*.twig', '<%= templatePath %>/*.blade.php', '<%= templatePath %>/**/*.html', '<%= templatePath %>/**/*.twig', '<%= templatePath %>/**/*.blade.php'],
+    js_src: ['<%= srcAssetsPath %>js/*.js', '<%= srcAssetsPath %>js/**/*.js'],
+    sass_src: ['<%= srcAssetsPath %>scss/*.scss', '<%= srcAssetsPath %>scss/**/*.scss'],
+    img_src: ['<%= srcAssetsPath %>img/**/*', '<%= srcAssetsPath %>img/*'],
+    js_dist: '<%=distAssetsPath %>js/',
+    css_dist: '<%=distAssetsPath %>css/',
+    img_dist: '<%=distAssetsPath %>img/'
   };
 /*
  ** Update bower component path if .bowerrc file exists

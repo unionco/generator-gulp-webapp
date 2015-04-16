@@ -1,0 +1,184 @@
+//
+// Helpers
+// - Dependencies
+// - Helper Classes
+
+
+//
+// Dependencies
+
+@import "../global";
+
+@include once("Utilities") {
+
+    //
+    // Helper Classes
+
+    .u-bgCover {
+        background-size: cover;
+    }
+
+    .u-clearfix {
+        &:after {
+            clear: both;
+            content: "";
+            display: table;
+        }
+    }
+
+    .u-fillBottom {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .u-floatLeft {
+        float: left;
+    }
+
+    .u-floatRight {
+        float: right;
+    }
+
+    .u-inline {
+        display: inline;
+    }
+
+    .u-inlineBlock {
+        display: inline-block;
+    }
+
+    .u-block {
+        display: block;
+
+        &--center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        &--right {
+            margin-left: auto;
+            margin-right: 0;
+        }
+    }
+
+    .em,
+    .u-em {
+        font-style: italic;
+    }
+
+    .u-bold,
+    .u-strong {
+        font-weight: $weight-bold;
+    }
+
+    .u-noMargin {
+        margin: 0;
+    }
+
+    .u-overflowHidden {
+        overflow: hidden;
+    }
+
+    .u-pad {
+        padding: 5%;
+
+        &--vOnly,
+        &--v {
+            padding: 5% 0;
+        }
+
+        &--h {
+            padding: 0 5%;
+        }
+
+        &--top {
+            padding-top: 5%;
+        }
+        &--left {
+            padding-left: 5%;
+        }
+        &--right {
+            padding-right: 5%;
+        }
+        &--bottom {
+            padding-bottom: 5%;
+        }
+    }
+
+    .u-siteWidth {
+        max-width: $site-width;
+        margin: 0 auto;
+        position: relative;
+
+        &--narrow {
+            @extend .u-siteWidth;
+            max-width: $narrow-container-width;
+        }
+    }
+
+    .u-spaceAround {
+        @extend %SpaceAround;
+    }
+
+    .u-verticalMiddle {
+        vertical-align: middle;
+    }
+
+    .u-textCenter {
+        text-align: center;
+    }
+
+    .u-textLeft {
+        text-align: left;
+    }
+
+    .u-textRight {
+        text-align: right;
+    }
+
+    .u-textNormal {
+        text-transform: none;
+    }
+
+    .u-textUpper {
+        text-transform: uppercase;
+    }
+
+    .u-weightNormal {
+        font-weight: normal;
+    }
+
+    .sr-only {
+        @include element-invisible;
+    }
+
+    // For removing the whitespace that occurs between
+    // two inline-block elements. Nest .u-zeroClear within .u-zeroFont,
+    // .u-zeroClear being an immediate child of .u-zeroFont
+
+    .u-zeroFont {
+        font-size: 0;
+    }
+    .u-zeroClear {
+        font-size: $base-font-size;
+    }
+
+    %hardware-accel {
+        perspective: 1000px;
+        backface-visibility: hidden;
+    }
+
+    %even-spacing {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    %space-around {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+}

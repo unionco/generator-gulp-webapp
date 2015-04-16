@@ -1,0 +1,36 @@
+//
+// Base Styles
+//
+
+@import "../global";
+
+@include once("Base") {
+
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+
+    html {
+        // Allow for easy REM values (1.5rem would be 15px)
+        font-size: 10px;
+    }
+
+    body {
+        cursor: default;
+        font: normal $weight-normal $base-font-size $primary-font;
+    }
+
+    a {
+        
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    h1,h2,h3,h4,h5,h6 {
+        
+    }
+
+}
