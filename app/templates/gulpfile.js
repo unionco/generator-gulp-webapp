@@ -14,7 +14,7 @@ var fs = require('fs'),
   clean = require('gulp-clean'),
   rename = require('gulp-rename'),
   config = {
-    browserSync_proxy: 'dev.<% siteUrl %>',
+    browserSync_proxy: 'dev.<%= siteUrl %>',
     bower_path: 'bower_components/',
     template_src: ['craft/templates/*.html', 'craft/templates/*.twig', 'craft/templates/**/*.html', 'craft/templates/**/*.twig'],
     js_src: ['public/src/js/*.js', 'public/src/js/**/*.js'],
