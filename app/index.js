@@ -43,31 +43,33 @@ module.exports = yeoman.generators.Base.extend({
       this.log(yosay('It\'s business time. UNION-style.'));
     }
 
-    var prompts = [{
-      type: 'checkbox',
-      name: 'features',
-      message: 'What more would you like?',
-      choices: [{
-        name: 'Modernizr',
-        value: 'includeModernizr',
-        checked: true
-      }]
-    },{
+    var prompts = [
+    // {
+    //   type: 'checkbox',
+    //   name: 'features',
+    //   message: 'What more would you like?',
+    //   choices: [{
+    //     name: 'Modernizr',
+    //     value: 'includeModernizr',
+    //     checked: true
+    //   }]
+    // },
+    {
       type: 'input',
       name: 'siteurl',
       message: 'Enter the website URL for this project (omit protocols and \'dev.\', please)'
     }];
 
     this.prompt(prompts, function (answers) {
-      var features = answers.features;
+      // var features = answers.features;
 
-      var hasFeature = function (feat) {
-        return features.indexOf(feat) !== -1;
-      };
+      // var hasFeature = function (feat) {
+      //   return features.indexOf(feat) !== -1;
+      // };
 
       // manually deal with the response, get back and store the results.
       // we change a bit this way of doing to automatically do this in the self.prompt() method.
-      this.includeModernizr = hasFeature('includeModernizr');
+      // this.includeModernizr = hasFeature('includeModernizr');
       this.siteUrl = answers.siteurl;
 
       done();
@@ -97,9 +99,7 @@ module.exports = yeoman.generators.Base.extend({
 
       bower.dependencies.jquery = '~2.1.1';
 
-      if (this.includeModernizr) {
-        bower.dependencies.modernizr = '~2.8.1';
-      }
+      bower.dependencies.modernizr = '~2.8.1';
 
       this.copy('bowerrc', '.bowerrc');
       this.write('bower.json', JSON.stringify(bower, null, 2));
