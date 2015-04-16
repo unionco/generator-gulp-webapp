@@ -27,7 +27,6 @@ Please see our [gulpfile.js](app/templates/gulpfile.js) for up to date informati
 - Run `yo gulp-webapp` to scaffold your webapp
 - Run `gulp` to preview and watch for changes
 - Run `bower install --save <package>` to install frontend dependencies
-- Run `gulp` to build your webapp for production
 
 
 ## Docs
