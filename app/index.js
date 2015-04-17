@@ -165,10 +165,10 @@ module.exports = yeoman.generators.Base.extend({
 
     this.on('end', function () {
       var theEnd = 
-      '\n==========\n' + chalk.white('We\'re done here.\n') + 
-      chalk.white('If installation of Node modules and Bower ran successfully, make sure\n') +
-      chalk.cyan(this.siteUrl) + chalk.white(' points to ') + chalk.magenta(this.rootFolder) + chalk.white(' in your virtual hosts\n') +
-      chalk.white('and run ') + chalk.yellow.bold('gulp') + '\n==========\n';
+      '\n==========\n' + chalk.white.bold('We\'re done here.\n') + 
+      chalk.white.bold('If installation of Node modules and Bower ran successfully, make sure\n') +
+      chalk.cyan.bold(this.siteUrl) + chalk.white.bold(' points to ') + chalk.magenta.bold(this.rootFolder) + chalk.white.bold(' in your virtual hosts\n') +
+      chalk.white.bold('and run ') + chalk.yellow.bold('gulp') + '\n==========\n';
 
       this.log(theEnd);
 
