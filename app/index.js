@@ -4,17 +4,10 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var yosay = require('yosay');
 var chalk = require('chalk');
-var wiredep = require('wiredep');
 
 module.exports = yeoman.generators.Base.extend({
   constructor: function () {
     yeoman.generators.Base.apply(this, arguments);
-
-    this.option('test-framework', {
-      desc: 'Test framework to be invoked',
-      type: String,
-      defaults: 'mocha'
-    });
 
     this.option('skip-welcome-message', {
       desc: 'Skips the welcome message',
@@ -43,6 +36,14 @@ module.exports = yeoman.generators.Base.extend({
       'jquery/dist/jquery.js',
       'modernizr/modernizr.js',
       'fastclick/lib/fastclick.js'
+    ];
+    this.randomGreetings = [
+      '<span style="font-family:Courier New,Courier,monospace;">display: block;</span>',
+      'Make it so.',
+      'You have arrived.',
+      'Many internet. Such wow.',
+      'Are you feeling <strong>Sass</strong>y?',
+      'It\'s UNION, not Union.'
     ];
   },
 
@@ -122,19 +123,11 @@ module.exports = yeoman.generators.Base.extend({
 
     sass: function () {
       this.copy('screen.scss', this.srcAssetsPath + 'scss/screen.scss');
-      this.copy('global.scss', this.srcAssetsPath + 'scss/_global.scss');
-      this.copy('base.scss', this.srcAssetsPath + 'scss/common/_base.scss');
-      this.copy('layout.scss', this.srcAssetsPath + 'scss/common/_layout.scss');
-      this.copy('mixins.scss', this.srcAssetsPath + 'scss/common/_mixins.scss');
-      this.copy('utilities.scss', this.srcAssetsPath + 'scss/common/_utilities.scss');
-      this.copy('variables.scss', this.srcAssetsPath + 'scss/common/_variables.scss');
-      this.copy('module.scss', this.srcAssetsPath + 'scss/modules/_module.scss');
-      this.copy('home.scss', this.srcAssetsPath + 'scss/screens/_home.scss');
     },
 
     views: function() {
       this.mkdir(this.templatePath);
-      this.copy('index.html', this.templatePath + '/index.html');
+      this.template('index.html', this.templatePath + '/index.html');
     },
 
     public: function () {
@@ -143,9 +136,6 @@ module.exports = yeoman.generators.Base.extend({
       this.mkdir(this.srcAssetsPath + 'js');
       this.mkdir(this.srcAssetsPath + 'js/vendor');
       this.mkdir(this.srcAssetsPath + 'scss');
-      this.mkdir(this.srcAssetsPath + 'scss/common');
-      this.mkdir(this.srcAssetsPath + 'scss/modules');
-      this.mkdir(this.srcAssetsPath + 'scss/screens');
       this.mkdir(this.srcAssetsPath + 'scss/vendor');
       this.mkdir(this.srcAssetsPath + 'img');
       this.mkdir(this.srcAssetsPath + 'fonts');
@@ -160,7 +150,7 @@ module.exports = yeoman.generators.Base.extend({
       chalk.yellow.bold('npm install & bower install') +
       ', inject your' +
       '\nfront end dependencies by running ' +
-      chalk.yellow.bold('gulp wiredep') +
+      chalk.yellow.bold('gulp') +
       '.';
 
     if (this.options['skip-install']) {
@@ -174,33 +164,14 @@ module.exports = yeoman.generators.Base.extend({
     });
 
     this.on('end', function () {
-      var bowerJson = this.dest.readJSON('bower.json');
+      var theEnd = 
+      '==========\nWe\'re done here.\n' + 
+      'If installation of Node modules and Bower ran successfully, make sure\n' +
+      chalk.cyan('dev.' + this.siteUrl) + ' points to ' + chalk.magenta(this.templatePath) + '\n' +
+      'and run ' + chalk.yellow.bold('gulp') + '\n==========\n';
 
-      // wire Bower packages to .html
-      wiredep({
-        bowerJson: bowerJson,
-        directory: 'bower_components',
-        ignorePath: /^(\.\.\/)*\.\./,
-        src: 'app/index.html'
-      });
+      this.log(theEnd);
 
-      // wire Bower packages to .scss
-      wiredep({
-        bowerJson: bowerJson,
-        directory: 'bower_components',
-        ignorePath: /^(\.\.\/)+/,
-        src: this.srcAssetsPath + 'scss/*.scss'
-      });
-
-      // ideally we should use composeWith, but we're invoking it here
-      // because generator-mocha is changing the working directory
-      // https://github.com/yeoman/generator-mocha/issues/28
-      this.invoke(this.options['test-framework'], {
-        options: {
-          'skip-message': this.options['skip-install-message'],
-          'skip-install': this.options['skip-install']
-        }
-      });
     }.bind(this));
   }
 });

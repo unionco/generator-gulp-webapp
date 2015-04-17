@@ -1,6 +1,68 @@
-node_modules
-dist
-.tmp
-.sass-cache
+# OS X
+.DS_Store
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# ctags
+tags
+
+# bower
 bower_components
-test/bower_components
+
+# npm
+node_modules
+
+# Sass
+.sass-cache
+
+# Composer
+composer.phar
+composer.lock
+vendor/.git
+
+# Vagrant
+.vagrant
+
+# Editor/IDE
+.idea
+*.sublime-workspace
+nbproject
+.project
+.settings
+.buildpath
+
+# Craft CMS
+craft/storage/**/*
+!craft/storage/backups/.gitkeep
+!craft/storage/import/.gitkeep
+!craft/storage/runtime/.gitkeep
+!craft/storage/userphotos/.gitkeep
+public/assets/*
+!public/assets/.gitkeep
+
+# Dev
+_dev
+
+# Miscellaneous
+fabfile.py
+*.pyc
+dev/*.settings.json
+*.swp
+*.map
+config.codekit
+/public/dist/css/*.css.map
+
+# IDE
+.buildpath
+
+# Pyro / Laravel
+.env
+/bin
+/build
+storage/framework

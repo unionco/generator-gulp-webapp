@@ -1,48 +1,64 @@
-//
-// Screen
-//
-// - Bower Components
-// - Vendor
-// - Common
-// - Modules
-// - Partials
-// - Screens
-// - Helpers
-//
+/*
 
+    HERE IS YOUR PRIMARY STYLESHEET
+    * / * / * / * / * / * / * / * /
 
-//
-// Bower Components
+    Please keep your SCSS modular. Here is an example
+    folder structure for your Sass:
 
-// @import "../../../bower_components/bower-component-path";
+    -- /common
+    -- /modules
+    -- /views
+    -- /vendor
+    -- screen.scss
 
+    ================
 
-//
-// Vendor
+    * /common
+    * ---
+    * Baseline styles and Sass components used throughout
+    * your project. Typically this would include separate
+    * files for variables, mixins, helper classes, and
+    * possibly layout.
 
-// @import "vendor/library-name";
+    * *
 
+    * /modules
+    * ---
+    * Separating sections of the site you're building into
+    * reusable chunks, or modules, will allow you to make
+    * your layout more flexible. Create a separate file for
+    * each module so they can all be easily found and
+    * modified.
 
-//
-// Common
+    * *
 
-@import "common/base";
-@import "common/layout";
+    * /views
+    * ---
+    * Sometimes certain pages of your project will require
+    * modifications on existing components that the rest of
+    * the site does not. Here you'll create separate files,
+    * on an as-needed basis (be conservative) to create one-
+    * off versions of modules for specific pages.
 
+    * *
 
-//
-// Modules
+    * /vendor
+    * ---
+    * You'll likely be using third-party libraries in your
+    * styling. Sometimes you may opt to simply reference the
+    * styles located within the /bower_components directory,
+    * but often times you may need to make modifications to
+    * these styles to match your site. Add these files here.
 
-@import "modules/module";
+    ================
 
+    Have fun out there.
 
-//
-// Screens
+     _   _  _  _  _   ___   _  _
+    | | | || \| || | / ⁔ \ | \| |
+    | |_| || .` || |( (_) )| .` |
+     \___/ |_|\_||_| \___/ |_|\_|
+     
 
-@import "screens/home";
-
-
-//
-// Helpers
-
-@import "common/utilities";
+*/
