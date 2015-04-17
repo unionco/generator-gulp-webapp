@@ -44,8 +44,6 @@ Please see our [gulpfile.js](app/templates/gulpfile.js) for up to date informati
   Skips the the message displayed after scaffolding has finished and before the dependencies are being installed.
 - `--skip-install`
   Skips the automatic execution of `bower` and `npm` after scaffolding has finished.
-- `--test-framework=<framework>`
-  Defaults to `mocha`. Can be switched for another supported testing framework like `jasmine`.
 
 
 ## Contribute
