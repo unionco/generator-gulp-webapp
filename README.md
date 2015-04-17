@@ -24,7 +24,7 @@ Please see our [gulpfile.js](app/templates/gulpfile.js) for up to date informati
 
 - Install dependencies: `npm install --global yo bower`
 - Install the generator: `npm install --global generator-union-webapp`
-- Run `yo gulp-webapp` to scaffold your webapp
+- Run `yo union-webapp` to scaffold your webapp
 - Run `gulp` to preview and watch for changes
 - Run `bower install --save <package>` to install frontend dependencies
 

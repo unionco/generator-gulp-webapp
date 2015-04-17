@@ -1,6 +1,6 @@
 {
   "name": "generator-union-webapp",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Scaffold out a front-end web app",
   "license": "BSD",
   "repository": "unionco/generator-union-webapp",
