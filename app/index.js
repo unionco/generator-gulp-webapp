@@ -58,7 +58,7 @@ module.exports = yeoman.generators.Base.extend({
     {
       type: 'input',
       name: 'siteurl',
-      message: "Enter the website URL (i.e. 'union.co'):\n"
+      message: "Enter the website URL (i.e. 'dev.union.co'):\n"
     },
     {
       type: 'input',
@@ -167,7 +167,7 @@ module.exports = yeoman.generators.Base.extend({
       var theEnd = 
       '==========\nWe\'re done here.\n' + 
       'If installation of Node modules and Bower ran successfully, make sure\n' +
-      chalk.cyan('dev.' + this.siteUrl) + ' points to ' + chalk.magenta(this.templatePath) + '\n' +
+      chalk.cyan(this.siteUrl) + ' points to ' + chalk.magenta(this.rootFolder) + ' in your virtual hosts\n' +
       'and run ' + chalk.yellow.bold('gulp') + '\n==========\n';
 
       this.log(theEnd);
