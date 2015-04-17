@@ -63,7 +63,7 @@ module.exports = yeoman.generators.Base.extend({
     {
       type: 'input',
       name: 'templatepath',
-      message: "Where will views be stored? Root-relative filepath (i.e. 'craft/templates'):\n"
+      message: "Where will views be stored? Root-relative filepath (i.e. 'public'):\n"
     }
     ];
 
@@ -165,10 +165,10 @@ module.exports = yeoman.generators.Base.extend({
 
     this.on('end', function () {
       var theEnd = 
-      '==========\nWe\'re done here.\n' + 
-      'If installation of Node modules and Bower ran successfully, make sure\n' +
-      chalk.cyan(this.siteUrl) + ' points to ' + chalk.magenta(this.rootFolder) + ' in your virtual hosts\n' +
-      'and run ' + chalk.yellow.bold('gulp') + '\n==========\n';
+      '\n==========\n' + chalk.white('We\'re done here.\n') + 
+      chalk.white('If installation of Node modules and Bower ran successfully, make sure\n') +
+      chalk.cyan(this.siteUrl) + chalk.white(' points to ') + chalk.magenta(this.rootFolder) + chalk.white(' in your virtual hosts\n') +
+      chalk.white('and run ') + chalk.yellow.bold('gulp') + '\n==========\n';
 
       this.log(theEnd);
 
