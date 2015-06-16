@@ -1,64 +1,56 @@
-/*
+// HERE IS YOUR PRIMARY STYLESHEET
 
-    HERE IS YOUR PRIMARY STYLESHEET
-    * / * / * / * / * / * / * / * /
+// Please keep your SCSS modular. Here is an example
+// folder structure for your Sass:
 
-    Please keep your SCSS modular. Here is an example
-    folder structure for your Sass:
+// scss
+// -- /common
+// -- /modules
+// -- /views
+// -- /vendor
+// -- screen.scss
 
-    -- /common
-    -- /modules
-    -- /views
-    -- /vendor
-    -- screen.scss
+// ================
 
-    ================
+// /common
+// ---
+// Baseline styles and Sass components used throughout
+// your project. Typically this would include separate
+// files for variables, mixins, helper classes, and
+// possibly layout.
 
-    * /common
-    * ---
-    * Baseline styles and Sass components used throughout
-    * your project. Typically this would include separate
-    * files for variables, mixins, helper classes, and
-    * possibly layout.
+// /modules
+// ---
+// Separating sections of the site you're building into
+// reusable chunks, or modules, will allow you to make
+// your layout more flexible. Create a separate file for
+// each module so they can all be easily found and
+// modified.
 
-    * *
+// /views
+// ---
+// Sometimes certain pages of your project will require
+// modifications on existing components that the rest of
+// the site does not. Here you'll create separate files,
+// on an as-needed basis (be conservative) to create one-
+// off versions of modules for specific pages.
 
-    * /modules
-    * ---
-    * Separating sections of the site you're building into
-    * reusable chunks, or modules, will allow you to make
-    * your layout more flexible. Create a separate file for
-    * each module so they can all be easily found and
-    * modified.
+// /vendor
+// ---
+// You'll likely be using third-party libraries in your
+// styling. Sometimes you may opt to simply reference the
+// styles located within the /bower_components directory,
+// but often times you may need to make modifications to
+// these styles to match your site. Add these files here.
 
-    * *
+// ================
 
-    * /views
-    * ---
-    * Sometimes certain pages of your project will require
-    * modifications on existing components that the rest of
-    * the site does not. Here you'll create separate files,
-    * on an as-needed basis (be conservative) to create one-
-    * off versions of modules for specific pages.
+// Have fun out there...but keep your pants on.
 
-    * *
+//  _   _  _  _  _   ___   _  _
+// | | | || \| || | / ⁔ \ | \| |
+// | |_| || .` || |( (_) )| .` |
+//  \___/ |_|\_||_| \___/ |_|\_|
+//
 
-    * /vendor
-    * ---
-    * You'll likely be using third-party libraries in your
-    * styling. Sometimes you may opt to simply reference the
-    * styles located within the /bower_components directory,
-    * but often times you may need to make modifications to
-    * these styles to match your site. Add these files here.
-
-    ================
-
-    Have fun out there.
-
-     _   _  _  _  _   ___   _  _
-    | | | || \| || | / ⁔ \ | \| |
-    | |_| || .` || |( (_) )| .` |
-     \___/ |_|\_||_| \___/ |_|\_|
-     
-
-*/
+@import "normalize";
