@@ -27,11 +27,7 @@ module.exports = yeoman.generators.Base.extend({
 
   initializing: function () {
     this.pkg = require('../package.json');
-    this.rootFolder = 'public/';
-    this.srcAssetsPathPublic = 'src/';
-    this.srcAssetsPath = this.rootFolder + 'src/';
-    this.distAssetsPathPublic = 'dist/';
-    this.distAssetsPath = this.rootFolder + 'dist/';
+
     this.vendorScripts = [
       'jquery/dist/jquery.js',
       'modernizr/modernizr.js',
@@ -62,15 +58,33 @@ module.exports = yeoman.generators.Base.extend({
     },
     {
       type: 'input',
+      name: 'publicpath',
+      message: "Where is your public directory located? (i.e. 'public' or 'public_html'):\n"
+    },
+    {
+      type: 'input',
       name: 'templatepath',
-      message: "Where will views be stored? Root-relative filepath (i.e. 'public'):\n"
+      message: "Where will views be stored? Root-relative filepath (i.e. 'app/views'):\n"
+    },
+    {
+      type: 'input',
+      name: 'srcassetspath',
+      message: "Enter the path where your source assets will be stored \n(i.e. 'public/src'):\n"
+    },
+    {
+      type: 'input',
+      name: 'distassetspath',
+      message: "Enter the path where your distributed assets will be stored \n(i.e. 'public/dist'):\n"
     }
     ];
 
     this.prompt(prompts, function (answers) {
 
       this.siteUrl = answers.siteurl;
-      this.templatePath = answers.templatepath;
+      this.publicPath = answers.publicpath.replace(/\/+$/, '');
+      this.templatePath = answers.templatepath.replace(/\/+$/, '');
+      this.srcAssetsPath = answers.srcassetspath.replace(/\/+$/, '');
+      this.distAssetsPath = answers.distassetspath.replace(/\/+$/, '');
 
       done();
     }.bind(this));
@@ -116,31 +130,30 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     h5bp: function () {
-      this.copy('favicon.ico', this.rootFolder + 'favicon.ico');
-      this.copy('apple-touch-icon.png', this.rootFolder + 'apple-touch-icon.png');
-      this.copy('robots.txt', this.rootFolder + 'robots.txt');
+      this.copy('favicon.ico', this.publicPath + '/favicon.ico');
+      this.copy('apple-touch-icon.png', this.publicPath + '/apple-touch-icon.png');
+      this.copy('robots.txt', this.publicPath + '/robots.txt');
     },
 
     sass: function () {
-      this.copy('screen.scss', this.srcAssetsPath + 'scss/screen.scss');
+      this.copy('screen.scss', this.srcAssetsPath + '/scss/screen.scss');
     },
 
     views: function() {
-      this.mkdir(this.templatePath);
-      this.template('index.html', this.templatePath + '/index.html');
+      this.mkdir(this.publicPath);
+      this.template('index.html', this.publicPath + '/index.html');
     },
 
     public: function () {
-      this.mkdir('public');
       this.mkdir(this.srcAssetsPath);
-      this.mkdir(this.srcAssetsPath + 'js');
-      this.mkdir(this.srcAssetsPath + 'js/vendor');
-      this.mkdir(this.srcAssetsPath + 'scss');
-      this.mkdir(this.srcAssetsPath + 'scss/vendor');
-      this.mkdir(this.srcAssetsPath + 'img');
-      this.mkdir(this.srcAssetsPath + 'fonts');
+      this.mkdir(this.srcAssetsPath + '/js');
+      this.mkdir(this.srcAssetsPath + '/js/vendor');
+      this.mkdir(this.srcAssetsPath + '/scss');
+      this.mkdir(this.srcAssetsPath + '/scss/vendor');
+      this.mkdir(this.srcAssetsPath + '/img');
+      this.mkdir(this.srcAssetsPath + '/fonts');
       this.mkdir(this.distAssetsPath);
-      this.copy('app.js', this.srcAssetsPath + 'js/app.js');
+      this.copy('app.js', this.srcAssetsPath + '/js/app.js');
     }
   },
 
@@ -167,7 +180,7 @@ module.exports = yeoman.generators.Base.extend({
       var theEnd = 
       '\n==========\n' + chalk.white.bold('We\'re done here.\n') + 
       chalk.white.bold('If installation of Node modules and Bower ran successfully, make sure\n') +
-      chalk.cyan.bold(this.siteUrl) + chalk.white.bold(' points to ') + chalk.magenta.bold(this.rootFolder) + chalk.white.bold(' in your virtual hosts\n') +
+      chalk.cyan.bold(this.siteUrl) + chalk.white.bold(' is set up in your virtual hosts\n') +
       chalk.white.bold('and run ') + chalk.yellow.bold('gulp') + '\n==========\n';
 
       this.log(theEnd);
