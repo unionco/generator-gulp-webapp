@@ -4,6 +4,7 @@ var fs = require('fs'),
   transform = require('vinyl-transform'),
   browserSync = require('browser-sync'),
   gulp = require('gulp'),
+  del = require('del'),
   sass = require('gulp-sass'),
   prefixer = require('gulp-autoprefixer'),
   sourcemaps = require('gulp-sourcemaps'),
@@ -11,7 +12,6 @@ var fs = require('fs'),
   uglify = require('gulp-uglify'),
   minify = require('gulp-minify-css'),
   imagemin = require('gulp-imagemin'),
-  clean = require('gulp-clean'),
   rename = require('gulp-rename'),
   config = {
     browserSync_proxy: '<%= siteUrl %>',
@@ -21,7 +21,9 @@ var fs = require('fs'),
     sass_src: ['<%= srcAssetsPath %>scss/*.scss', '<%= srcAssetsPath %>scss/**/*.scss'],
     img_src: ['<%= srcAssetsPath %>img/**/*', '<%= srcAssetsPath %>img/*'],
     js_dist: '<%=distAssetsPath %>js/',
+    js_clean_path: '<%=distAssetsPath %>js/**/*',
     css_dist: '<%=distAssetsPath %>css/',
+    css_clean_path: '<%=distAssetsPath %>css/**/*',
     img_dist: '<%=distAssetsPath %>img/'
   };
 /*
@@ -46,7 +48,9 @@ gulp.watch(config.template_src, ['util:reload']);
 gulp.task('util:sync', function() {
   if(argv.sync !== 0) {
     browserSync({
-      proxy: config.browserSync_proxy
+      proxy: config.browserSync_proxy,
+      host: config.browserSync_proxy,
+      open: 'external'
     });
   }
 });
@@ -60,10 +64,9 @@ gulp.task('util:reload', function() {
  ** CSS: Clean destination folder before processing css
  */
 gulp.task('css:clean', function() {
-  return gulp.src([config.css_dist + '*.css'], {
-    read: false
-  })
-  .pipe(clean());
+  del([config.css_clean_path], function(err,paths) {
+      console.log("Cleaned CSS:\n", paths.join('\n'));
+  });
 });
 /*
  ** CSS: Compile sass and add autoprefixer
@@ -102,10 +105,9 @@ gulp.task('css:dist', ['css:clean', 'css:sass'], function() {
  ** JS: Clean js folder before processing scripts
  */
 gulp.task('js:clean', function() {
-  return gulp.src([config.js_dist + '*.js'], {
-    read: false
-  })
-  .pipe(clean());
+  del([config.js_clean_path], function(err,paths) {
+      console.log("Cleaned JS:\n", paths.join('\n'));
+  });
 });
 /*
  ** JS: Combine vendor js files
