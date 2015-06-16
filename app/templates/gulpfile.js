@@ -16,15 +16,15 @@ var fs = require('fs'),
   config = {
     browserSync_proxy: '<%= siteUrl %>',
     bower_path: 'bower_components/',
-    template_src: ['<%= templatePath %>/*.html', '<%= templatePath %>/*.twig', '<%= templatePath %>/*.blade.php', '<%= templatePath %>/**/*.html', '<%= templatePath %>/**/*.twig', '<%= templatePath %>/**/*.blade.php'],
-    js_src: ['<%= srcAssetsPath %>js/*.js', '<%= srcAssetsPath %>js/**/*.js'],
-    sass_src: ['<%= srcAssetsPath %>scss/*.scss', '<%= srcAssetsPath %>scss/**/*.scss'],
-    img_src: ['<%= srcAssetsPath %>img/**/*', '<%= srcAssetsPath %>img/*'],
-    js_dist: '<%=distAssetsPath %>js/',
-    js_clean_path: '<%=distAssetsPath %>js/**/*',
-    css_dist: '<%=distAssetsPath %>css/',
-    css_clean_path: '<%=distAssetsPath %>css/**/*',
-    img_dist: '<%=distAssetsPath %>img/'
+    template_src: ['<%= templatePath %>/*.html','<%= templatePath %>/*.php','<%= templatePath %>/*.twig'],
+    js_src: ['<%= srcAssetsPath %>/js/*.js', '<%= srcAssetsPath %>/js/**/*.js'],
+    sass_src: ['<%= srcAssetsPath %>/scss/*.scss', '<%= srcAssetsPath %>/scss/**/*.scss'],
+    img_src: ['<%= srcAssetsPath %>/img/**/*', '<%= srcAssetsPath %>/img/*'],
+    js_dist: '<%=distAssetsPath %>/js/',
+    js_clean_path: '<%=distAssetsPath %>/js/**/*',
+    css_dist: '<%=distAssetsPath %>/css/',
+    css_clean_path: '<%=distAssetsPath %>/css/**/*',
+    img_dist: '<%=distAssetsPath %>/img/'
   };
 /*
  ** Update bower component path if .bowerrc file exists
