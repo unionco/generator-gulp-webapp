@@ -4,6 +4,7 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var yosay = require('yosay');
 var chalk = require('chalk');
+var download = require('download-github-repo');
 
 module.exports = yeoman.generators.Base.extend({
   constructor: function () {
@@ -69,12 +70,12 @@ module.exports = yeoman.generators.Base.extend({
     {
       type: 'input',
       name: 'srcassetspath',
-      message: "Enter the path where your source assets will be stored \n(i.e. 'public/src'):\n"
+      message: "Enter the path where your source assets will be stored (i.e. 'public/src'):\n"
     },
     {
       type: 'input',
       name: 'distassetspath',
-      message: "Enter the path where your distributed assets will be stored \n(i.e. 'public/dist'):\n"
+      message: "Enter the path where your distributed assets will be stored (i.e. 'public/dist'):\n"
     }
     ];
 
@@ -177,13 +178,62 @@ module.exports = yeoman.generators.Base.extend({
     });
 
     this.on('end', function () {
+      var afterInstallPrompts = [
+        {
+          type: 'list',
+          name: 'nextstep',
+          message: "\nWhat would you like me to do here?\n",
+          choices: [
+            {
+              name: "Finish up. I've got better things to do.",
+              value: 'finish'
+            },
+            {
+              name: "Import some goodies from a GitHub repo (yes, I'm lazy).",
+              value: 'github'
+            }
+          ]
+        }
+      ];
+
+      var gitHubPrompts = [
+        {
+          type: 'input',
+          name: 'githubrepo',
+          message: "Enter the GitHub repository name (i.e. unionco/hinge):\n"
+        },
+        {
+          type: 'input',
+          name: 'githubdest',
+          message: "Where should the files from this repository be placed? (Give me a relative directory path):\n"
+        }
+      ];
+
       var theEnd = 
       '\n==========\n' + chalk.white.bold('We\'re done here.\n') + 
       chalk.white.bold('If installation of Node modules and Bower ran successfully, make sure\n') +
       chalk.cyan.bold(this.siteUrl) + chalk.white.bold(' is set up in your virtual hosts\n') +
       chalk.white.bold('and run ') + chalk.yellow.bold('gulp') + '\n==========\n';
 
-      this.log(theEnd);
+      this.prompt(afterInstallPrompts, function(answers) {
+        this.nextStep = answers.nextstep;
+
+        if(this.nextStep == 'finish') {
+          this.log(theEnd);
+        } else {
+          this.prompt(gitHubPrompts, function(answers) {
+
+            this.gitHubRepo = answers.githubrepo;
+            this.gitHubDest = answers.githubdest;
+
+            download(this.gitHubRepo, this.gitHubDest, function() {
+              this.log(theEnd);
+            });
+
+          }.bind(this));
+        }
+
+      }.bind(this));
 
     }.bind(this));
   }
