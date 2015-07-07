@@ -125,10 +125,6 @@ module.exports = yeoman.generators.Base.extend({
       this.copy('jshintrc', '.jshintrc');
     },
 
-    editorConfig: function () {
-      this.copy('editorconfig', '.editorconfig');
-    },
-
     h5bp: function () {
       this.copy('favicon.ico', this.publicPath + '/favicon.ico');
       this.copy('apple-touch-icon.png', this.publicPath + '/apple-touch-icon.png');
